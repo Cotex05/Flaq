@@ -8,6 +8,10 @@ npm-debug.*
 *.mobileprovision
 *.orig.*
 web-build/
+Dumps/
+
+.serviceAccountKey.json
+secret.txt
 
 # macOS
 .DS_Store
