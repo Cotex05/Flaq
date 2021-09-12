@@ -10,7 +10,7 @@ npm-debug.*
 web-build/
 Dumps/
 
-.serviceAccountKey.json
+serviceAccountKey.json
 secret.txt
 
 # macOS
