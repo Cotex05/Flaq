@@ -1,7 +1,7 @@
-# Flaq - A messeging app.
+# Flaq - A personal messaging app.
 
 #### This android/ios App has been developed using React Native and Firebase. App has
-#### secured authentication, where users can search otherregistered users and chat with
+#### secured authentication, where users can search other registered users and chat with
 #### them. Users can also update their profile picture and their bio. All the messages are
 #### stored in the firestore database with encryption. Users can also share the images to
 #### other users.
