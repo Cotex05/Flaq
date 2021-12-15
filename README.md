@@ -6,10 +6,6 @@
 #### stored in the firestore database with encryption. Users can also share the images to
 #### other users.
 
-<div>
-  <br />
-  </div>
-
 
 https://user-images.githubusercontent.com/61322721/146204651-3a7fe5d3-603f-496a-b03a-039d9fa22d21.mp4
 
@@ -24,6 +20,3 @@ https://user-images.githubusercontent.com/61322721/146204651-3a7fe5d3-603f-496a-
 <img align="left" src="https://user-images.githubusercontent.com/61322721/146197585-a14ff75d-b3fa-45ca-a015-bc099f9be7af.jpeg" width="300" alt="Screen" />
 <img align="left" src="https://user-images.githubusercontent.com/61322721/146197548-38daf0ec-58bf-4294-8ffb-c2272d399185.jpeg" width="300" alt="Screen" />
 </div>
-
- <br />
-<hr />
