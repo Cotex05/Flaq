@@ -40,7 +40,7 @@ const Addchat = ({ navigation }) => {
                 // dismissed
             }
         } catch (error) {
-            Alert.alert("Error!" ,error.message);
+            Alert.alert("Error!", error.message);
         }
     };
 
@@ -69,7 +69,7 @@ const Addchat = ({ navigation }) => {
         const snapshot = await db.collection('user').where('email', '==', searchKey).get();
         if (!snapshot.empty) {
             snapshot.forEach(profile => {
-                if (profile.data().email === searchKey) {
+                if (profile.data().email === searchKey.toLocaleLowerCase()) {
                     // console.log(profile.data().email);
                     setEmail(profile.data().email);
                     setName(profile.data().username);
@@ -133,7 +133,7 @@ const Addchat = ({ navigation }) => {
                 autoCorrect={false}
                 keyboardType="email-address"
                 value={input}
-                onChangeText={text => setInput(text.toLocaleLowerCase())}
+                onChangeText={text => setInput(text)}
                 onSubmitEditing={searchUser}
                 maxLength={50}
                 leftIcon={

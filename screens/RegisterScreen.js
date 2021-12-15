@@ -8,6 +8,7 @@ const RegisterScreen = ({ navigation }) => {
     const [name, setName] = useState("");
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
+    const [showPassword, setShowPassword] = useState(true);
 
     const register = () => {
         if (name.trim().length === 0 || name.length < 5) {
@@ -62,17 +63,26 @@ const RegisterScreen = ({ navigation }) => {
                     keyboardType="email-address"
                     type="email"
                     value={email}
-                    onChangeText={text => setEmail(text.toLocaleLowerCase())}
+                    onChangeText={text => setEmail(text)}
                     maxLength={50}
                 />
                 <Input
                     placeholder="Password"
                     autoCorrect={false}
-                    secureTextEntry
+                    secureTextEntry={showPassword}
                     type="password"
                     value={password}
                     onChangeText={text => setPassword(text)}
                     maxLength={30}
+                    rightIcon={
+                        <Icon
+                            name={showPassword ? "eye-off" : "eye"}
+                            type="ionicon"
+                            size={25}
+                            color={showPassword ? "green" : "grey"}
+                            onPress={() => { setShowPassword(!showPassword) }}
+                        />
+                    }
                 />
             </View>
             <Button raised containerStyle={styles.button} onPress={register} title="Register" />

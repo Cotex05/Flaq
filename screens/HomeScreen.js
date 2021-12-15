@@ -20,10 +20,12 @@ const HomeScreen = ({ navigation }) => {
         setAppState("inactive");
         db.collection("onlineUsers").doc(auth.currentUser?.email).set({
             online: appState,
-        });
-        auth.signOut().then(() => {
-            navigation.replace('Login');
-        });
+        }).then(() => {
+            console.log("logout!");
+            auth.signOut().then(() => {
+                navigation.replace('Login');
+            });
+        })
     }
 
     useEffect(() => {

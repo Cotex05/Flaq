@@ -10,6 +10,8 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import * as ImagePicker from 'expo-image-picker';
 import { Camera } from 'expo-camera';
 
+var CryptoJS = require("crypto-js");
+
 const ChatScreen = ({ navigation, route }) => {
 
     // States
@@ -36,6 +38,8 @@ const ChatScreen = ({ navigation, route }) => {
     const users_email = route.params.email;
     const users_image = route.params.profileImage;
     const users_name = route.params.chatName;
+
+    const key = userEmail + users_email;
 
     // For Chat background Wallpapers
     const bg = [
@@ -245,14 +249,24 @@ const ChatScreen = ({ navigation, route }) => {
         }, 100);
     }, [messages]);
 
+    const keyGen = () => {
+        var str = userEmail + users_email;
+        var arr = str.split('');
+        var sorted = arr.sort();
+        return sorted.join('');
+    }
 
     // Functions
     const sendMessage = () => {
+        // Encrypt
+        const key = keyGen();
+        const cipherText = CryptoJS.AES.encrypt(input, key).toString();
 
+        // to firebase
         if (input.trim().length !== 0) {
             db.collection("User-Chats-Contents").doc(userEmail).collection("chatContents").doc(emailHash).collection("messages").add({
                 timestamp: firebase.firestore.FieldValue.serverTimestamp(),
-                message: input,
+                message: cipherText,
                 imageSrc: null,
                 displayName: auth.currentUser?.displayName,
                 email: auth.currentUser?.email,
@@ -260,7 +274,7 @@ const ChatScreen = ({ navigation, route }) => {
             });
             db.collection("User-Chats-Contents").doc(route.params.email).collection("chatContents").doc(emailHash).collection("messages").add({
                 timestamp: firebase.firestore.FieldValue.serverTimestamp(),
-                message: input,
+                message: cipherText,
                 imageSrc: null,
                 displayName: auth.currentUser?.displayName,
                 email: auth.currentUser?.email,
@@ -546,12 +560,16 @@ const ChatScreen = ({ navigation, route }) => {
                                 {messages.map(({ id, data, time, seen }) => {
 
                                     let msgs = <View />;
+                                    // Decrypt'
+                                    const key = keyGen();
+                                    let bytes = CryptoJS.AES.decrypt(data.message, key);
+                                    let originalText = bytes.toString(CryptoJS.enc.Utf8);
 
                                     if (data.email === auth.currentUser?.email) {
                                         msgs = <View key={id} style={styles.sender}>
                                             <TouchableOpacity onLongPress={() => handleChatSelect(id)}>
                                                 {data.imageSrc != null ? <Image source={{ uri: data.imageSrc }} style={styles.ImageMsg} /> : null}
-                                                <Text style={styles.sendermsg}>{data.message}</Text>
+                                                <Text style={styles.sendermsg}>{originalText}</Text>
                                                 <Text style={{ alignSelf: 'flex-end', position: 'absolute', bottom: 2, right: -8 }}><Icon name="check" type="entypo" color={seen ? "limegreen" : '#c0c0c0'} size={15} /></Text>
                                                 <Text
                                                     style={{
@@ -570,7 +588,7 @@ const ChatScreen = ({ navigation, route }) => {
                                         msgs = <Animatable.View animation="pulse" delay={500} key={id} style={styles.receiver}>
                                             <TouchableOpacity>
                                                 {data.imageSrc != null ? <Image source={{ uri: data.imageSrc }} style={styles.ImageMsg} /> : null}
-                                                <Text style={styles.recievermsg}>{data.message}</Text>
+                                                <Text style={styles.recievermsg}>{originalText}</Text>
                                                 <Text
                                                     style={{
                                                         fontSize: 9,
